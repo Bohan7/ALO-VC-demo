@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html>
+<!-- <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ALO-VC_demo</title>
+</head> -->
+
+<head>
+   <script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-138229553-8"></script>
+   <script>
+     window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+     gtag('js', new Date());
+
+     gtag('config', 'UA-138229553-8');
+   </script>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>ALO-VC</title>
+   <link href="css/bootstrap.min.css" rel="stylesheet">
+ <style type="text/css">
+   main {
+   padding-bottom: 50px;
+   }
+   header a:link {
+   color: #EEEEEE;    
+   }
+   header a:hover {
+   color: #EEEEEE;
+   }
+   header a:visited {
+   color: #EEEEEE;
+   }
+   header a:active {
+   color: #EEEEEE;
+   }
+   footer {
+   padding-top: 10px;
+   padding-bottom: 10px;
+   background-color: #333333;
+   color: #BBBBBB;
+   }
+   table {
+   width: 100%;
+   table-layout: fixed;
+   }
+   th {
+   text-align: center;
+   vertical-align: middle;
+   }
+   td {
+   text-align: center;
+   vertical-align: middle;
+   }
+   th#strong{
+   color: #FF33CC;
+   }
+   th#blue{
+   color: #3f51b5;
+   }
+   #blue{
+   color: #3f51b5;
+   }
+   #pinkstrong{
+   color: #FF33CC;
+   }
+   audio {
+   width: 100%;
+   }
+   .jumbotroncolor {
+   background-color: #333333;
+   color: #EEEEEE;
+   }
+   .thumbnailsize {
+   width: 200px;
+   }
+   .thumbnailshadow {
+   filter: drop-shadow(5px 5px 5px #aaa);
+   }
+   @media screen and (max-width:767px) {
+   h1 { font-size:20pt;}
+   }
+   @media screen and (min-width:768px){
+   h1 { font-size:30pt; margin-top: 50px; margin-bottom: 50px;}
+   }
+   .rounded {
+    border-radius: 0.25rem!important;
+   }
+   .bg-white {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-white-rgb),var(--bs-bg-opacity))!important;
+   }      
+   .shadow {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+   }
+   .pt-5 {
+    padding-top: 3rem!important;
+   }
+   .p-5 {
+    padding: 3rem!important;
+   }
+   .mb-5 {
+    margin-bottom: 3rem!important;
+   }   
+   .mt-5 {
+    margin-top: 3rem!important;
+   }
+
+ </style></head>
+<body>
+   <header class="header" id="top">
+      <div class="text-center">
+         <div class="container">
+         <h1>ALO-VC: Any-to-any Low-latency One-shot Voice Conversion</h1>
+         <!-- <h2>Any-to-any Low-latency One-shot Voice Conversion</h2> -->
+         </div>
+      </div>
+   </header>
+
+    <!-- <hr style="height:3px;border:none;border-top:3px solid #eee;" > -->
+    <!--<h2>Audio samples for paper VQMIVC</h2>-->
+   <div class="container">
+      <hr style="height:3px;border:none;border-top:3px solid #eee;">
+      <div class="row" id="results">
+         <div class="col-md-12">
+            <h2>Converted audio samples</h2>	 
+           
+            <h5>Notation</h5>
+            <ul>
+               <li>All the source speech samples and target speech samples are unseen during training</li>
+               <li><strong id="blue">ALO-VC-R</strong> is ALO-VC with d-vector speaker encoder from <a href="https://github.com/resemble-ai/Resemblyzer"><strong>Resemblyzer</strong></a></li>
+               <li><strong id="blue">ALO-VC-E</strong> is ALO-VC with <a href="https://arxiv.org/abs/2005.07143"><strong>ECAPA-TDNN</strong></a> speaker encoder. The <a href="https://arxiv.org/abs/2005.07143"><strong>ECAPA-TDNN</strong></a> speaker encoder can improve the performance.</li>
+             </ul>
+
+
+            <div class="container pt-5 mt-5 shadow p-5 mb-5 bg-white rounded">
+               <div class="text-center">
+                  <h1>VCTK</h1>
+               </div>
+
+               <p class="lead">Female (p301) → Male (p256)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2m/p301_005.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2m/target_p256_036.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2m/p301_005conv_p256_036_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2m/p301_005conv_p256_036_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2m/p301_005conv_p256_036_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2m/p301_005conv_p256_036_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>   
+
+               <p class="lead">Female (p268) → Female (p301)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2f/p268_002.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2f/target_p301_019.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2f/p268_002conv_p301_026_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2f/p268_002conv_p301_026_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2f/p268_002conv_p301_026_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/f2f/p268_002conv_p301_026_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>     
+               
+               <p class="lead">Male (p252) → Female (p268)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2f/p252_001.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2f/target_p268_012.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2f/p252_001conv_p268_012_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2f/p252_001conv_p268_012_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2f/p252_001conv_p268_012_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2f/p252_001conv_p268_012_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+
+               <p class="lead">Male (p256) → Male (p252)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2m/p256_004.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2m/target_p252_021.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2m/p256_004conv_p252_021_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2m/p256_004conv_p252_021_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2m/p256_004conv_p252_021_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/VCTK/m2m/p256_004conv_p252_021_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+
+            <div class="container pt-5 mt-5 shadow p-5 mb-5 bg-white rounded">
+               <div class="text-center">
+                  <h1>LibirSpeech</h1>
+               </div>
+
+               <p class="lead">Female (1988) → Male (251)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2m/1988-148538-0003.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2m/target_251-118436-0005.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2m/1988-148538-0003conv_251-118436-0005_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2m/1988-148538-0003conv_251-118436-0005_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2m/1988-148538-0003conv_251-118436-0005_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2m/1988-148538-0003conv_251-118436-0005_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>   
+
+               <p class="lead">Female (1988) → Female (2412)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2f/1988-148538-0002.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2f/target_2412-153947-0000.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2f/1988-148538-0002conv_2412-153947-0000_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2f/1988-148538-0002conv_2412-153947-0000_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2f/1988-148538-0002conv_2412-153947-0000_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/f2f/1988-148538-0002conv_2412-153947-0000_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>     
+               
+               <p class="lead">Male (652) → Female (2412)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2f/652-129742-0000.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2f/target_2412-153947-0000.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2f/652-129742-0000conv_2412-153947-0000_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2f/652-129742-0000conv_2412-153947-0000_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2f/652-129742-0000conv_2412-153947-0000_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2f/652-129742-0000conv_2412-153947-0000_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+
+               <p class="lead">Male (652) → Male (251)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2m/652-129742-0012.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2m/target_251-118436-0006.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2m/652-129742-0012conv_251-118436-0006_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2m/652-129742-0012conv_251-118436-0006_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2m/652-129742-0012conv_251-118436-0006_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/LibriSpeech/m2m/652-129742-0012conv_251-118436-0006_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+
+
+
+            <div class="container pt-5 mt-5 shadow p-5 mb-5 bg-white rounded">
+               <div class="text-center">
+                  <h1>Internal Speakers</h1>
+               </div>
+
+               <p class="lead">Female (anna) → Male (karl)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2m/anna_003.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2m/target_karl_003.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2m/anna_003conv_karl_003_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2m/anna_003conv_karl_003_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2m/anna_003conv_karl_003_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2m/anna_003conv_karl_003_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>   
+
+               <p class="lead">Female (anna) → Female (tijana)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2f/anna_007.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2f/target_tijana_007.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2f/anna_007conv_tijana_007_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2f/anna_007conv_tijana_007_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2f/anna_007conv_tijana_007_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/f2f/anna_007conv_tijana_007_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>     
+               
+               <p class="lead">Male (karl) → Female (tijana)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2f/karl_008.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2f/target_tijana_009.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2f/karl_008conv_tijana_009_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2f/karl_008conv_tijana_009_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2f/karl_008conv_tijana_009_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2f/karl_008conv_tijana_009_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+
+               <p class="lead">Male (karl) → Male (sander)</p>
+               <div>
+                  <table class="table">
+                     <thead>
+                        <tr>
+                        <th></th>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>VQMIVC<br><small>(Baseline)</small></th>
+                        <th>DiffVC<br><small>(Baseline)</small></th>
+                        <th id="blue">ALO-VC-R<br><small>(Proposed)</small></th>
+                        <th id="blue">ALO-VC-E<br><small>(Proposed)</small></th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                        <th scope="row">Sample</th>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2m/karl_016.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2m/target_sander_017.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2m/karl_016conv_sander_017_vqmivc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2m/karl_016conv_sander_017_diffvc.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2m/karl_016conv_sander_017_alo_vc_r.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        <td>
+                           <audio controls="">
+                        <source src="audios/InternalSpeaker/m2m/karl_016conv_sander_017_alo_vc_e.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                           </audio>
+                        </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+
+    
+
+       
+
+</body>
+</html>
